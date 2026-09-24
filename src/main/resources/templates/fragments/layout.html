@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <!-- ============================================================ -->
+    <!-- NAVBAR compartido: th:fragment="navbar(activo)" recibe un       -->
+    <!-- parámetro "activo" con el nombre de la página actual (ej:        -->
+    <!-- 'catalogo') para pintar ese link como seleccionado.             -->
+    <!-- ============================================================ -->
+    <!-- navbar                -> componente Navbar de Bootstrap
+         navbar-expand-lg      -> en pantallas grandes (>= 992px) se ven todos los links; en celular se esconden tras el botón de hamburguesa
+         bg-primary            -> fondo del color "primary" (en styles.css lo cambiamos a nuestro azul #1f3a68)
+         sticky-top            -> el navbar se queda pegado arriba al hacer scroll
+         shadow-sm             -> sombra pequeña debajo del navbar
+         py-2                  -> padding arriba y abajo
+         data-bs-theme="dark"  -> le dice a Bootstrap que SOLO este bloque use colores de tema oscuro (textos e íconos blancos), aunque la página sea clara -->
+    <nav th:fragment="navbar(activo)" class="navbar navbar-expand-lg bg-primary sticky-top shadow-sm py-2" data-bs-theme="dark">
+        <!-- container       -> centra el contenido y le pone un ancho máximo según la pantalla -->
+        <div class="container">
+
+            <!-- navbar-brand -> estilo de "logo/nombre" del navbar
+                 d-flex align-items-center gap-2 -> pone el ícono y el texto en fila, centrados verticalmente y con espacio entre ellos
+                 fw-bold -> texto en negrita -->
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="/catalogo">
+                <!-- bi bi-cpu-fill -> ícono de Bootstrap Icons; fs-4 -> tamaño de letra grande -->
+                <i class="bi bi-cpu-fill fs-4"></i>
+                Tienda de Licencias AI
+            </a>
+
+            <!-- navbar-toggler -> botón de hamburguesa que solo aparece en celular
+                 data-bs-toggle="collapse" + data-bs-target="#navbarMenu" -> al hacer clic abre/cierra el div con id="navbarMenu" (JS de Bootstrap, no nuestro) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- collapse navbar-collapse -> este bloque es el que se esconde/muestra en celular -->
+            <div class="collapse navbar-collapse" id="navbarMenu">
+
+                <!-- navbar-nav -> lista de links del navbar
+                     me-auto    -> margen derecho automático: empuja todo lo que viene después hacia la derecha
+                     ms-lg-3    -> margen izquierdo solo en pantallas grandes -->
+                <ul class="navbar-nav me-auto ms-lg-3">
+                    <li class="nav-item">
+                        <!-- nav-link -> estilo de link del navbar
+                             th:classappend -> Thymeleaf agrega la clase "active" SOLO si activo == 'catalogo' -->
+                        <a class="nav-link" href="/catalogo" th:classappend="${activo == 'catalogo'} ? 'active'">
+                            <i class="bi bi-grid-3x3-gap me-1"></i>Catálogo
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/nosotros" th:classappend="${activo == 'nosotros'} ? 'active'">
+                            <i class="bi bi-info-circle me-1"></i>Sobre nosotros
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Buscador: manda lo escrito a /catalogo?q=texto (method="get"), y catalogo.js lo lee para filtrar.
+                     data-bs-theme="light" -> este formulario vuelve al tema claro para que la caja de texto sea blanca y no oscura
+                     my-2 my-lg-0 -> margen vertical en celular, sin margen en pantallas grandes
+                     me-lg-3 -> separación a la derecha en pantallas grandes -->
+                <form class="my-2 my-lg-0 me-lg-3" action="/catalogo" method="get" role="search" data-bs-theme="light">
+                    <!-- input-group -> une la caja de texto y el botón en un solo bloque -->
+                    <div class="input-group">
+                        <!-- form-control -> estilo de caja de texto de Bootstrap -->
+                        <input class="form-control" type="search" name="q" placeholder="Buscar suscripción..." aria-label="Buscar">
+                        <!-- btn btn-light -> botón blanco de Bootstrap -->
+                        <button class="btn btn-light" type="submit" aria-label="Buscar">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- d-flex align-items-center gap-2 -> carrito y cuenta en fila con espacio entre ellos -->
+                <div class="d-flex align-items-center gap-2">
+
+                    <!-- Botón del carrito.
+                         btn btn-outline-light -> botón con borde blanco y fondo transparente
+                         position-relative -> necesario para que el badge se posicione encima del botón -->
+                    <a href="/carrito" class="btn btn-outline-light position-relative" th:classappend="${activo == 'carrito'} ? 'active'" aria-label="Ver carrito">
+                        <i class="bi bi-cart3"></i>
+                        <span class="d-lg-none ms-1">Carrito</span>
+                        <!-- badge rounded-pill bg-danger -> etiqueta roja redonda (componente Badge de Bootstrap)
+                             position-absolute top-0 start-100 translate-middle -> la pone en la esquina superior derecha del botón
+                             d-none -> oculta al inicio; carrito.js la muestra cuando hay productos -->
+                        <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle d-none" id="contadorCarrito">0</span>
+                    </a>
+
+                    <!-- dropdown -> componente Dropdown REAL de Bootstrap (menú desplegable) -->
+                    <div class="dropdown">
+                        <!-- dropdown-toggle -> agrega la flechita; data-bs-toggle="dropdown" hace que abra el menú -->
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i>Mi cuenta
+                        </button>
+                        <!-- dropdown-menu-end -> el menú se alinea a la derecha del botón
+                             data-bs-theme="light" -> el menú se ve blanco aunque esté dentro del navbar oscuro
+                             shadow -> sombra alrededor del menú -->
+                        <ul class="dropdown-menu dropdown-menu-end shadow" data-bs-theme="light">
+                            <li><a class="dropdown-item" href="/"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/dashboard"><i class="bi bi-speedometer2 me-2"></i>Mi panel</a></li>
+                            <li><a class="dropdown-item" href="/solicitudes"><i class="bi bi-clock-history me-2"></i>Solicitudes</a></li>
+                            <li><a class="dropdown-item" href="/soporte"><i class="bi bi-headset me-2"></i>Soporte</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ============================================================ -->
+    <!-- FOOTER compartido con los datos de contacto. Se usa en todas   -->
+    <!-- las páginas con th:replace="~{fragments/layout :: footer}"     -->
+    <!-- ============================================================ -->
+    <!-- footer-tienda -> clase nuestra (styles.css) con el azul más oscuro del footer
+         text-white -> todo el texto en blanco
+         pt-5 pb-3 -> padding arriba grande y abajo pequeño
+         mt-auto -> empuja el footer al fondo de la pantalla cuando la página tiene poco contenido (funciona porque el body es d-flex flex-column) -->
+    <footer th:fragment="footer" class="footer-tienda text-white pt-5 pb-3 mt-auto">
+        <div class="container">
+
+            <!-- row -> fila de la grilla de Bootstrap; g-4 -> espacio entre columnas -->
+            <div class="row g-4">
+
+                <!-- col-lg-4 -> ocupa 4 de 12 columnas en pantallas grandes; en celular ocupa todo el ancho -->
+                <div class="col-lg-4">
+                    <h5 class="fw-bold d-flex align-items-center gap-2">
+                        <i class="bi bi-cpu-fill"></i>Tienda de Licencias AI
+                    </h5>
+                    <!-- small -> letra más pequeña; footer-texto -> gris claro (styles.css) -->
+                    <p class="small footer-texto mb-3">
+                        Suscripciones de inteligencia artificial originales, al mejor precio y con activación rápida.
+                    </p>
+                    <!-- Redes sociales: íconos de Bootstrap Icons -->
+                    <div class="d-flex gap-3 fs-5">
+                        <a href="#" class="footer-link" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="footer-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="footer-link" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                        <a href="#" class="footer-link" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <!-- col-6 -> en celular ocupa la mitad (2 columnas lado a lado); col-lg-2 -> en pantallas grandes ocupa 2 de 12 -->
+                <div class="col-6 col-lg-2">
+                    <!-- text-uppercase -> texto en mayúsculas -->
+                    <h6 class="fw-bold text-uppercase small mb-3">Tienda</h6>
+                    <!-- list-unstyled -> lista sin viñetas ni margen izquierdo -->
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a href="/catalogo" class="footer-link">Catálogo</a></li>
+                        <li><a href="/carrito" class="footer-link">Carrito</a></li>
+                        <li><a href="/nosotros" class="footer-link">Sobre nosotros</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <h6 class="fw-bold text-uppercase small mb-3">Ayuda</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a href="/soporte" class="footer-link">Soporte</a></li>
+                        <li><a href="/nosotros#preguntas" class="footer-link">Preguntas frecuentes</a></li>
+                        <li><a href="/" class="footer-link">Mi cuenta</a></li>
+                    </ul>
+                </div>
+
+                <!-- Datos de contacto (cambiar por los reales del grupo) -->
+                <div class="col-lg-4">
+                    <h6 class="fw-bold text-uppercase small mb-3">Contacto</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2 footer-texto">
+                        <li><i class="bi bi-geo-alt-fill me-2"></i>Lima, Perú</li>
+                        <li><i class="bi bi-envelope-fill me-2"></i>contacto@tiendalicenciasai.pe</li>
+                        <li><i class="bi bi-telephone-fill me-2"></i>+51 987 654 321</li>
+                        <li><i class="bi bi-clock-fill me-2"></i>Lunes a sábado, 9:00 a. m. – 7:00 p. m.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Línea separadora y derechos. border-top -> línea arriba; footer-borde -> color de esa línea (styles.css) -->
+            <div class="border-top footer-borde mt-4 pt-3 d-flex flex-column flex-md-row justify-content-between gap-2 small footer-texto">
+                <span>© 2026 Tienda de Licencias AI · Proyecto académico UTP</span>
+                <span>
+                    <i class="bi bi-credit-card me-1"></i>Tarjeta
+                    <i class="bi bi-phone ms-3 me-1"></i>Yape / Plin
+                </span>
+            </div>
+        </div>
+
+        <!-- Aviso flotante ("Toast" de Bootstrap) que usa carrito.js al añadir productos.
+             Va dentro del footer para que exista en todas las páginas.
+             toast-container position-fixed bottom-0 end-0 p-3 -> lo fija abajo a la derecha de la pantalla -->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <!-- toast -> componente Toast; text-body -> texto oscuro normal (porque el footer tiene text-white) -->
+            <div class="toast text-body" id="avisoCarrito" role="status" aria-live="polite" aria-atomic="true">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i class="bi bi-check-circle-fill text-success fs-5" id="avisoCarritoIcono"></i>
+                    <span class="flex-grow-1" id="avisoCarritoTexto">Producto añadido.</span>
+                    <a href="/carrito" class="btn btn-sm btn-primary">Ver carrito</a>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

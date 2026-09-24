@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión - Tienda de Licencias AI</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="min-vh-100 d-flex flex-column">
+
+    <!-- Navbar compartido (ninguna sección marcada como activa) -->
+    <nav th:replace="~{fragments/layout :: navbar('login')}"></nav>
+
+    <!-- flex-grow-1 -> ocupa el espacio entre navbar y footer
+         d-flex align-items-center justify-content-center -> centra la tarjeta de login en ese espacio
+         p-4 -> padding alrededor -->
+    <main class="flex-grow-1 d-flex align-items-center justify-content-center p-4">
+
+    <div class="auth-card overflow-hidden">
+
+        <div class="auth-header text-center">
+            <h1 class="auth-title">Tienda de Licencias AI</h1>
+            <p class="auth-subtitle">Acceso a tu cuenta</p>
+        </div>
+
+        <div class="d-flex nav-tabs-custom">
+            <button class="flex-fill text-center tab-btn active-tab" id="tab-login" onclick="cambiarPestana('login')">
+                INICIAR SESIÓN
+            </button>
+            <button class="flex-fill text-center tab-btn inactive-tab" id="tab-register" onclick="cambiarPestana('register')">
+                REGISTRARSE
+            </button>
+        </div>
+
+        <div class="p-4 d-block" id="form-login">
+
+            <!-- Mensaje de error real que manda AuthController cuando el
+                 correo/clave no coinciden (RedirectAttributes con
+                 "flash attribute", por eso no hace falta que este
+                 controlador reciba el Model a mano) -->
+            <div class="alert alert-danger py-2 small mb-3" th:if="${error}" th:text="${error}"></div>
+
+            <!-- Ya manda el formulario de verdad al backend (POST /login,
+                 ver AuthController) en vez de solo prevenir el envío -->
+            <form th:action="@{/login}" method="post">
+                <div class="mb-3">
+                    <label class="form-label-custom" for="login-email">Correo Electrónico</label>
+                    <input class="form-control form-control-custom w-100" id="login-email" name="email" placeholder="nombre@correo.com" required type="email">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label-custom" for="login-password">Contraseña</label>
+                    <input class="form-control form-control-custom w-100" id="login-password" name="password" placeholder="••••••••" required type="password">
+                </div>
+                <!-- OJO: en el archivo original de avance 1 este botón no
+                     tenía la clase real "btn" de Bootstrap (solo la clase
+                     de color a la medida), lo cual no cumplía la regla de
+                     tu compañero. Se la agregué acá. -->
+                <button class="w-100 btn btn-custom-primary" type="submit">
+                    ACCEDER
+                </button>
+            </form>
+        </div>
+
+        <div class="p-4 d-none" id="form-register">
+            <form onsubmit="event.preventDefault();">
+                <div class="mb-3">
+                    <label class="form-label-custom" for="reg-name">Nombre Completo</label>
+                    <input class="form-control form-control-custom w-100" id="reg-name" placeholder="Ingrese su nombre" required type="text">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label-custom" for="reg-email">Correo Electrónico</label>
+                    <input class="form-control form-control-custom w-100" id="reg-email" placeholder="nombre@correo.com" required type="email">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label-custom" for="reg-password">Contraseña</label>
+                    <input class="form-control form-control-custom w-100" id="reg-password" placeholder="••••••••" required type="password">
+                </div>
+                <button class="w-100 btn btn-custom-primary" type="submit">
+                    CREAR CUENTA
+                </button>
+            </form>
+        </div>
+    </div>
+    </main>
+
+    <!-- Footer compartido con los datos de contacto -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- productos.js y carrito.js: para que el numerito del carrito del navbar funcione en esta página -->
+    <script th:src="@{/js/productos.js}"></script>
+    <script th:src="@{/js/carrito.js}"></script>
+
+    <script>
+        // Cambia entre la pestaña de "Iniciar sesión" y "Registrarse"
+        // mostrando/ocultando cada formulario con las clases d-block/d-none
+        // de Bootstrap (no hay nada de backend todavía, solo la UI)
+        function cambiarPestana(tab) {
+            const loginForm = document.getElementById('form-login');
+            const registerForm = document.getElementById('form-register');
+            const loginBtn = document.getElementById('tab-login');
+            const registerBtn = document.getElementById('tab-register');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('d-none');
+                loginForm.classList.add('d-block');
+                registerForm.classList.remove('d-block');
+                registerForm.classList.add('d-none');
+
+                loginBtn.classList.add('active-tab');
+                loginBtn.classList.remove('inactive-tab');
+
+                registerBtn.classList.remove('active-tab');
+                registerBtn.classList.add('inactive-tab');
+            } else {
+                registerForm.classList.remove('d-none');
+                registerForm.classList.add('d-block');
+                loginForm.classList.remove('d-block');
+                loginForm.classList.add('d-none');
+
+                registerBtn.classList.add('active-tab');
+                registerBtn.classList.remove('inactive-tab');
+
+                loginBtn.classList.remove('active-tab');
+                loginBtn.classList.add('inactive-tab');
+            }
+        }
+    </script>
+</body>
+</html>

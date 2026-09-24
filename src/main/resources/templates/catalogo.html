@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<!-- data-bs-theme="light" -> toda la página usa el tema claro de Bootstrap (ya no hay modo oscuro) -->
+<html lang="es" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Tienda de Licencias AI</title>
+
+    <!-- Bootstrap 5 y Bootstrap Icons por CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Nuestros estilos propios (colores, portadas, footer) -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<!-- min-vh-100 -> el body mide al menos el alto de la pantalla
+     d-flex flex-column -> apila navbar, contenido y footer en columna (así el footer queda al fondo) -->
+<body class="min-vh-100 d-flex flex-column">
+
+    <!-- Navbar compartido; le pasamos 'catalogo' para marcar ese link como activo -->
+    <nav th:replace="~{fragments/layout :: navbar('catalogo')}"></nav>
+
+    <!-- flex-grow-1 -> el contenido ocupa todo el espacio sobrante entre navbar y footer
+         py-4 -> padding arriba y abajo -->
+    <main class="flex-grow-1 py-4">
+        <div class="container">
+
+            <!-- ======================================================= -->
+            <!-- BANNER DE OFERTAS que se mueve solo: componente Carousel  -->
+            <!-- REAL de Bootstrap                                         -->
+            <!-- ======================================================= -->
+            <!-- carousel slide -> carrusel con animación de deslizamiento
+                 data-bs-ride="carousel" -> empieza a moverse solo al cargar la página
+                 data-bs-interval="4000" (en cada slide) -> cambia cada 4 segundos
+                 mb-4 -> margen abajo; rounded-4 -> esquinas redondeadas; overflow-hidden -> recorta lo que sale de las esquinas; shadow-sm -> sombra -->
+            <div id="bannerOfertas" class="carousel slide mb-4 rounded-4 overflow-hidden shadow-sm" data-bs-ride="carousel">
+
+                <!-- carousel-indicators -> las rayitas de abajo para saltar a cada slide -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#bannerOfertas" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Oferta 1"></button>
+                    <button type="button" data-bs-target="#bannerOfertas" data-bs-slide-to="1" aria-label="Oferta 2"></button>
+                    <button type="button" data-bs-target="#bannerOfertas" data-bs-slide-to="2" aria-label="Oferta 3"></button>
+                </div>
+
+                <!-- carousel-inner -> contenedor de los slides -->
+                <div class="carousel-inner">
+
+                    <!-- carousel-item active -> primer slide (el que se ve al inicio)
+                         banner-slide banner-azul -> clases nuestras: alto del banner y fondo degradado (styles.css) -->
+                    <div class="carousel-item active banner-slide banner-azul" data-bs-interval="4000">
+                        <!-- h-100 -> ocupa todo el alto del slide; d-flex align-items-center -> centra el texto verticalmente
+                             px-4 px-md-5 -> padding a los lados (más grande en pantallas medianas) -->
+                        <div class="h-100 d-flex align-items-center px-4 px-md-5">
+                            <!-- row w-100 align-items-center -> fila que ocupa todo el ancho, con columnas centradas verticalmente -->
+                            <div class="row w-100 align-items-center">
+                                <!-- col-md-8 -> el texto ocupa 8 de 12 columnas en pantallas medianas o más -->
+                                <div class="col-md-8 text-white">
+                                    <!-- badge bg-warning text-dark -> etiqueta amarilla con texto oscuro -->
+                                    <span class="badge bg-warning text-dark mb-2">OFERTA DE LA SEMANA</span>
+                                    <!-- display-6 -> título grande; fw-bold -> negrita -->
+                                    <h2 class="display-6 fw-bold mb-2">ChatGPT Plus con 20% de descuento</h2>
+                                    <!-- opacity-75 -> texto un poco transparente para que se vea más suave -->
+                                    <p class="mb-3 opacity-75">Llévate 1 mes a solo S/ 59.90. Activación en menos de 24 horas.</p>
+                                    <!-- btn btn-light fw-semibold -> botón blanco en semi-negrita
+                                         onclick -> filtra el catálogo por ese modelo (función de catalogo.js) -->
+                                    <button type="button" class="btn btn-light fw-semibold" onclick="filtrarDesdeBanner('ChatGPT')">Ver oferta</button>
+                                </div>
+                                <!-- d-none d-md-block -> este ícono gigante se oculta en celular y se muestra desde pantallas medianas
+                                     text-center -> centrado -->
+                                <div class="col-md-4 d-none d-md-block text-center">
+                                    <i class="bi bi-chat-dots-fill banner-icono"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item banner-slide banner-morado" data-bs-interval="4000">
+                        <div class="h-100 d-flex align-items-center px-4 px-md-5">
+                            <div class="row w-100 align-items-center">
+                                <div class="col-md-8 text-white">
+                                    <span class="badge bg-warning text-dark mb-2">PRECIO ESPECIAL</span>
+                                    <h2 class="display-6 fw-bold mb-2">Google AI Pro desde S/ 55</h2>
+                                    <p class="mb-3 opacity-75">Gemini avanzado + 2 TB de almacenamiento. ¡Solo por tiempo limitado!</p>
+                                    <button type="button" class="btn btn-light fw-semibold" onclick="filtrarDesdeBanner('Gemini')">Ver oferta</button>
+                                </div>
+                                <div class="col-md-4 d-none d-md-block text-center">
+                                    <i class="bi bi-gem banner-icono"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item banner-slide banner-verde" data-bs-interval="4000">
+                        <div class="h-100 d-flex align-items-center px-4 px-md-5">
+                            <div class="row w-100 align-items-center">
+                                <div class="col-md-8 text-white">
+                                    <span class="badge bg-warning text-dark mb-2">PARA PROGRAMADORES</span>
+                                    <h2 class="display-6 fw-bold mb-2">GitHub Copilot Pro a S/ 36</h2>
+                                    <p class="mb-3 opacity-75">Programa más rápido con IA dentro de VS Code e IntelliJ.</p>
+                                    <button type="button" class="btn btn-light fw-semibold" onclick="filtrarDesdeBanner('GitHub Copilot')">Ver oferta</button>
+                                </div>
+                                <div class="col-md-4 d-none d-md-block text-center">
+                                    <i class="bi bi-code-slash banner-icono"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flechas para pasar de slide a mano (carousel-control-prev / -next de Bootstrap) -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#bannerOfertas" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#bannerOfertas" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+
+            <!-- Breadcrumb (ruta de navegación) como en G2A: componente Breadcrumb de Bootstrap -->
+            <nav aria-label="Ruta de navegación">
+                <!-- breadcrumb -> lista con separadores "/"; small -> letra pequeña -->
+                <ol class="breadcrumb small mb-2">
+                    <li class="breadcrumb-item"><a href="/catalogo">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="/catalogo">Suscripciones</a></li>
+                    <!-- active -> el último paso, sin link -->
+                    <li class="breadcrumb-item active" aria-current="page">Suscripciones de IA</li>
+                </ol>
+            </nav>
+
+            <!-- h3 fw-bold mb-4 -> título en negrita con margen abajo -->
+            <h1 class="h3 fw-bold mb-4">Suscripciones de IA</h1>
+
+            <!-- row g-4 -> fila con espacio entre la columna de filtros y la de productos -->
+            <div class="row g-4">
+
+                <!-- ================================================ -->
+                <!-- COLUMNA DE FILTROS (izquierda en pantallas grandes, -->
+                <!-- arriba en celular)                                   -->
+                <!-- ================================================ -->
+                <!-- col-lg-3 -> ocupa 3 de 12 columnas en pantallas grandes -->
+                <aside class="col-lg-3">
+                    <!-- card -> componente Card de Bootstrap; border-0 shadow-sm -> sin borde, con sombra suave -->
+                    <div class="card border-0 shadow-sm">
+                        <!-- card-body -> padding interno de la tarjeta -->
+                        <div class="card-body">
+
+                            <!-- d-flex justify-content-between align-items-center -> título a la izquierda, botón a la derecha -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h6 fw-bold mb-0"><i class="bi bi-funnel me-1"></i>Filtros</h2>
+                                <!-- btn btn-link btn-sm p-0 -> botón con estilo de link, pequeño y sin padding -->
+                                <button type="button" class="btn btn-link btn-sm p-0" onclick="limpiarFiltros()">Limpiar</button>
+                            </div>
+
+                            <!-- FILTRO 1: Ordenar por precio / relevancia -->
+                            <!-- form-label -> estilo de etiqueta de formulario de Bootstrap; small fw-semibold -> pequeño y semi-negrita -->
+                            <label for="filtroOrden" class="form-label small fw-semibold">Ordenar por</label>
+                            <!-- form-select -> lista desplegable con estilo de Bootstrap; mb-4 -> margen abajo -->
+                            <select id="filtroOrden" class="form-select mb-4" onchange="mostrarProductos()">
+                                <option value="relevancia">Relevancia</option>
+                                <option value="precio-asc">Precio: más bajo primero</option>
+                                <option value="precio-desc">Precio: más alto primero</option>
+                            </select>
+
+                            <!-- FILTRO 2: Modelo de IA. Las opciones (radio buttons) las crea catalogo.js
+                                 a partir de la lista de productos, con el número de planes de cada modelo -->
+                            <p class="form-label small fw-semibold mb-2">Modelo de IA</p>
+                            <!-- d-flex flex-column gap-2 -> opciones una debajo de otra con espacio -->
+                            <div id="filtroModelo" class="d-flex flex-column gap-2"></div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- ================================================ -->
+                <!-- COLUMNA DE PRODUCTOS                               -->
+                <!-- ================================================ -->
+                <!-- col-lg-9 -> ocupa las 9 columnas restantes -->
+                <section class="col-lg-9">
+
+                    <!-- Barra superior: cantidad de resultados y búsqueda activa -->
+                    <!-- flex-wrap -> si no entra en una línea, baja a la siguiente -->
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                        <!-- text-secondary -> texto gris -->
+                        <span class="text-secondary" id="contadorResultados">0 artículos</span>
+                        <!-- Aquí catalogo.js muestra "Resultados para: ..." cuando se usó el buscador -->
+                        <div id="busquedaActiva"></div>
+                    </div>
+
+                    <!-- Grilla de tarjetas: catalogo.js la llena con los productos.
+                         row-cols-1 -> 1 tarjeta por fila en celular
+                         row-cols-sm-2 -> 2 por fila desde pantallas pequeñas
+                         row-cols-xl-3 -> 3 por fila en pantallas extra grandes
+                         g-3 -> espacio entre tarjetas -->
+                    <div id="gridProductos" class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3"></div>
+
+                    <!-- Mensaje cuando ningún producto cumple los filtros.
+                         d-none -> oculto al inicio; text-center py-5 -> centrado con mucho espacio arriba/abajo -->
+                    <div id="sinResultados" class="text-center py-5 d-none">
+                        <i class="bi bi-search display-4 text-secondary"></i>
+                        <p class="mt-3 mb-2 fw-semibold">No encontramos suscripciones con esos filtros.</p>
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="limpiarFiltros()">Ver todo el catálogo</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- ======================================================= -->
+    <!-- MODAL "Ver detalles": componente Modal REAL de Bootstrap. -->
+    <!-- Es uno solo para todos los productos; catalogo.js le      -->
+    <!-- cambia el contenido según la tarjeta que se abrió.        -->
+    <!-- ======================================================= -->
+    <!-- modal fade -> ventana emergente con animación de aparecer -->
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="detalleNombre" aria-hidden="true">
+        <!-- modal-dialog-centered -> centrado vertical; modal-lg -> modal más ancho -->
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <!-- modal-content -> la "caja" blanca del modal; border-0 -> sin borde; overflow-hidden -> recorta las esquinas -->
+            <div class="modal-content border-0 overflow-hidden">
+                <!-- g-0 -> fila sin espacio entre columnas -->
+                <div class="row g-0">
+                    <!-- Portada de color a la izquierda (arriba en celular).
+                         col-md-5 -> 5 de 12 columnas desde pantallas medianas
+                         portada-detalle -> alto mínimo (styles.css); la clase de color la pone catalogo.js -->
+                    <div class="col-md-5 portada-detalle d-flex flex-column align-items-center justify-content-center text-white p-4" id="detallePortada">
+                        <i class="bi display-1" id="detalleIcono"></i>
+                        <span class="fw-bold fs-5 mt-2" id="detalleModelo"></span>
+                    </div>
+                    <div class="col-md-7">
+                        <!-- modal-header border-0 -> encabezado del modal sin línea de abajo -->
+                        <div class="modal-header border-0 pb-0">
+                            <h5 class="modal-title fw-bold" id="detalleNombre">Producto</h5>
+                            <!-- btn-close -> la X para cerrar; data-bs-dismiss="modal" hace que cierre el modal -->
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <!-- modal-body -> contenido principal del modal -->
+                        <div class="modal-body">
+                            <!-- Etiquetas de tipo, duración y región (las llena catalogo.js) -->
+                            <div class="d-flex flex-wrap gap-2 mb-3" id="detalleEtiquetas"></div>
+                            <p class="text-secondary small" id="detalleDescripcion"></p>
+                            <p class="small fw-semibold mb-2">Incluye:</p>
+                            <!-- list-unstyled -> lista sin viñetas; catalogo.js agrega un <li> por beneficio -->
+                            <ul class="list-unstyled small d-flex flex-column gap-1 mb-3" id="detalleIncluye"></ul>
+                            <!-- Stock disponible -->
+                            <p class="small mb-0" id="detalleStock"></p>
+                        </div>
+                        <!-- modal-footer -> parte de abajo con precio y botón -->
+                        <div class="modal-footer justify-content-between">
+                            <div>
+                                <!-- text-decoration-line-through -> tachado (precio anterior) -->
+                                <div class="small text-secondary text-decoration-line-through" id="detallePrecioAnterior"></div>
+                                <!-- fs-4 fw-bold text-primary -> precio grande, en negrita y en nuestro azul -->
+                                <div class="fs-4 fw-bold text-primary" id="detallePrecio"></div>
+                            </div>
+                            <!-- btn btn-primary -> botón azul principal -->
+                            <button type="button" class="btn btn-primary" id="detalleBotonAgregar">
+                                <i class="bi bi-cart-plus me-1"></i>Añadir al carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer compartido con los datos de contacto -->
+    <footer th:replace="~{fragments/layout :: footer}"></footer>
+
+    <!-- JS de Bootstrap (necesario para carrusel, modal, dropdown, toast y menú de celular) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Nuestros scripts, EN ESTE ORDEN: primero los datos, luego el carrito, luego la lógica del catálogo -->
+    <script th:src="@{/js/productos.js}"></script>
+    <script th:src="@{/js/carrito.js}"></script>
+    <script th:src="@{/js/catalogo.js}"></script>
+</body>
+</html>

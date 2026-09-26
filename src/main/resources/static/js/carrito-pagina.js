@@ -1,4 +1,3 @@
-var cuponAplicado = false;
 function mostrarCarrito() {
     var carrito = leerCarrito();
     var vacio = carrito.length === 0;
@@ -77,7 +76,6 @@ function eliminarDelCarrito(id) {
     mostrarCarrito();
 }
 function vaciarCarrito() {
-    cuponAplicado = false;
     guardarCarrito([]);
     mostrarCarrito();
 }
@@ -94,30 +92,12 @@ function calcularResumen() {
         precioRegular += regular * item.cantidad;
         totalOfertas += producto.precio * item.cantidad;
     });
-    var descuentoCupon = cuponAplicado ? totalOfertas * 0.10 : 0;
-    var total = totalOfertas - descuentoCupon;
+    var total = totalOfertas;
 
     document.getElementById('resumenCantidad').textContent = cantidadTotal;
     document.getElementById('resumenRegular').textContent = formatearPrecio(precioRegular);
     document.getElementById('resumenDescuento').textContent = '- ' + formatearPrecio(precioRegular - totalOfertas);
-    document.getElementById('resumenCupon').textContent = '- ' + formatearPrecio(descuentoCupon);
-    document.getElementById('filaCupon').classList.toggle('d-none', !cuponAplicado);
     document.getElementById('resumenTotal').textContent = formatearPrecio(total);
-}
-function aplicarCupon() {
-    var codigo = document.getElementById('inputCupon').value.trim().toUpperCase();
-    var mensaje = document.getElementById('mensajeCupon');
-
-    if (codigo === 'UTP10') {
-        cuponAplicado = true;
-        mensaje.className = 'small mb-3 text-success';
-        mensaje.textContent = 'Cupón aplicado: 10% de descuento.';
-    } else {
-        cuponAplicado = false;
-        mensaje.className = 'small mb-3 text-danger';
-        mensaje.textContent = 'Ese cupón no es válido.';
-    }
-    calcularResumen();
 }
 async function finalizarCompra() {
     var carrito = leerCarrito();

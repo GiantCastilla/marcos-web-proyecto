@@ -271,6 +271,86 @@ a:hover {
     top: 96px;
 }
 
+.carrito-page .table-responsive {
+    overflow-x: auto;
+}
+
+.carrito-page #tablaCarrito {
+    min-width: 650px;
+}
+
+.carrito-page .card-footer {
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.navbar .dropdown-menu {
+    min-width: 210px;
+}
+
+@media (max-width: 991.98px) {
+    .navbar .navbar-collapse {
+        padding-top: 12px;
+    }
+
+    .navbar .navbar-collapse > form {
+        width: 100%;
+        margin-right: 0 !important;
+    }
+
+    .navbar .navbar-collapse > .d-flex {
+        align-items: stretch !important;
+        flex-direction: column;
+        gap: 8px !important;
+    }
+
+    .navbar .navbar-collapse > .d-flex > .dropdown,
+    .navbar .navbar-collapse > .d-flex > .dropdown > .dropdown-toggle {
+        width: 100%;
+    }
+
+    .navbar .navbar-collapse .dropdown-toggle {
+        text-align: left;
+    }
+
+    .navbar .navbar-collapse .dropdown-menu {
+        position: static !important;
+        width: 100%;
+        margin-top: 6px;
+        box-shadow: none !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .carrito-page {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .carrito-page .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .carrito-page .resumen-fijo {
+        position: static !important;
+    }
+
+    .carrito-page .card-footer {
+        align-items: stretch !important;
+        flex-direction: column;
+    }
+
+    .carrito-page .card-footer a,
+    .carrito-page .card-footer button {
+        width: 100%;
+    }
+
+    .carrito-page .card-footer a {
+        text-align: center;
+    }
+}
+
 
 
 

@@ -18,7 +18,7 @@ public class PaginaController {
         return "catalogo";
     }
 
-    @GetMapping({"/catalogo/detalle/{id}", "/catalogo/detalles/{id}"})
+    @GetMapping({"/catalogo/detalles/{id}"})
     public String detalleCatalogo() {
         return "catalogo-detalle";
     }

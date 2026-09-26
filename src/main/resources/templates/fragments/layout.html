@@ -70,7 +70,7 @@
                     <div class="dropdown">
                         
                         <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle me-1"></i>Mi cuenta
+                            <i class="bi bi-person-circle me-1"></i><span th:text="${session.usuarioNombre != null ? session.usuarioNombre : 'Mi cuenta'}">Mi cuenta</span>
                         </button>
                         
                         <ul class="dropdown-menu dropdown-menu-end shadow" data-bs-theme="light">
@@ -78,7 +78,7 @@
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/dashboard"><i class="bi bi-speedometer2 me-2"></i>Mi panel</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>LOGOUT</a></li>
+                            <li><a class="dropdown-item text-danger" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a></li>
                         </ul>
                     </div>
                 </div>
@@ -109,10 +109,10 @@
                     </p>
                     
                     <div class="d-flex gap-3 fs-5">
-                        <a href="#" class="footer-link" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="footer-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="footer-link" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
-                        <a href="#" class="footer-link" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/diegocsalcedoz/" class="footer-link" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/diegocsz/" class="footer-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@diegosimply" class="footer-link" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                        <a href="https://wa.link/8bpbkq" class="footer-link" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
                     </div>
                 </div>
 
@@ -141,8 +141,8 @@
                     <h6 class="fw-bold text-uppercase small mb-3">Contacto</h6>
                     <ul class="list-unstyled small d-flex flex-column gap-2 footer-texto">
                         <li><i class="bi bi-geo-alt-fill me-2"></i>Lima, Perú</li>
-                        <li><i class="bi bi-envelope-fill me-2"></i>contacto@tiendalicenciasai.pe</li>
-                        <li><i class="bi bi-telephone-fill me-2"></i>+51 987 654 321</li>
+                        <li><i class="bi bi-envelope-fill me-2"></i>contacto@hakai.pe</li>
+                        <li><i class="bi bi-telephone-fill me-2"></i>+51 963 478 660</li>
                         <li><i class="bi bi-clock-fill me-2"></i>Lunes a sábado, 9:00 a. m. – 7:00 p. m.</li>
                     </ul>
                 </div>
@@ -150,7 +150,7 @@
 
             
             <div class="border-top footer-borde mt-4 pt-3 d-flex flex-column flex-md-row justify-content-between gap-2 small footer-texto">
-                <span>© 2026 Hakai · Proyecto académico UTP</span>
+                <span>© 2026 Hakai</span>
                 <span>
                     <i class="bi bi-credit-card me-1"></i>Tarjeta
                     <i class="bi bi-phone ms-3 me-1"></i>Yape / Plin

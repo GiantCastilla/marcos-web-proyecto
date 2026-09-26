@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito - Tienda de Licencias AI</title>
+    <title>Carrito - Hakai</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -11,13 +11,13 @@
 </head>
 <body class="min-vh-100 d-flex flex-column">
 
-    <!-- Navbar compartido; 'carrito' marca el botón del carrito como activo -->
+    
     <nav th:replace="~{fragments/layout :: navbar('carrito')}"></nav>
 
     <main class="flex-grow-1 py-4">
         <div class="container">
 
-            <!-- Breadcrumb de Bootstrap -->
+            
             <nav aria-label="Ruta de navegación">
                 <ol class="breadcrumb small mb-2">
                     <li class="breadcrumb-item"><a href="/catalogo">Inicio</a></li>
@@ -27,14 +27,14 @@
 
             <h1 class="h3 fw-bold mb-4"><i class="bi bi-cart3 me-2"></i>Tu carrito</h1>
 
-            <!-- ================================================ -->
-            <!-- CARRITO VACÍO (carrito-pagina.js decide si se ve) -->
-            <!-- ================================================ -->
-            <!-- d-none -> oculto al inicio -->
+            
+            
+            
+            
             <div id="carritoVacio" class="card border-0 shadow-sm d-none">
-                <!-- text-center py-5 -> contenido centrado con mucho espacio arriba y abajo -->
+                
                 <div class="card-body text-center py-5">
-                    <!-- display-3 -> ícono muy grande; text-secondary -> gris -->
+                    
                     <i class="bi bi-cart-x display-3 text-secondary"></i>
                     <h2 class="h5 fw-bold mt-3">Tu carrito está vacío</h2>
                     <p class="text-secondary">Agrega suscripciones desde el catálogo para verlas aquí.</p>
@@ -42,38 +42,38 @@
                 </div>
             </div>
 
-            <!-- ================================================ -->
-            <!-- CARRITO CON PRODUCTOS                              -->
-            <!-- ================================================ -->
+            
+            
+            
             <div id="carritoLleno" class="row g-4 d-none">
 
-                <!-- Lista de productos: col-lg-8 -> 8 de 12 columnas en pantallas grandes -->
+                
                 <div class="col-lg-8">
                     <div class="card border-0 shadow-sm">
-                        <!-- table-responsive -> en celular la tabla se puede deslizar de lado en vez de romper la página -->
+                        
                         <div class="table-responsive">
-                            <!-- table -> tabla de Bootstrap; align-middle -> contenido centrado verticalmente en cada celda; mb-0 -> sin margen abajo -->
+                            
                             <table class="table align-middle mb-0">
-                                <!-- table-light -> encabezado con fondo gris claro -->
+                                
                                 <thead class="table-light">
                                     <tr class="small text-secondary">
-                                        <!-- ps-4 -> padding izquierdo para que no quede pegado al borde -->
+                                        
                                         <th class="ps-4 fw-semibold">Producto</th>
                                         <th class="fw-semibold">Precio</th>
-                                        <!-- text-center -> título centrado -->
+                                        
                                         <th class="fw-semibold text-center">Cantidad</th>
                                         <th class="fw-semibold">Subtotal</th>
                                         <th class="pe-4"></th>
                                     </tr>
                                 </thead>
-                                <!-- carrito-pagina.js llena este tbody con una fila por producto -->
+                                
                                 <tbody id="tablaCarrito"></tbody>
                             </table>
                         </div>
-                        <!-- card-footer bg-white -> parte de abajo de la tarjeta, con fondo blanco -->
+                        
                         <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3 px-4">
                             <a href="/catalogo" class="btn btn-link px-0"><i class="bi bi-arrow-left me-1"></i>Seguir comprando</a>
-                            <!-- btn-outline-danger btn-sm -> botón rojo solo con borde, pequeño -->
+                            
                             <button type="button" class="btn btn-outline-danger btn-sm" onclick="vaciarCarrito()">
                                 <i class="bi bi-trash me-1"></i>Vaciar carrito
                             </button>
@@ -81,30 +81,30 @@
                     </div>
                 </div>
 
-                <!-- Resumen del pedido: col-lg-4 -> las 4 columnas restantes -->
+                
                 <div class="col-lg-4">
-                    <!-- sticky-lg-top resumen-fijo -> en pantallas grandes el resumen se queda visible al bajar (resumen-fijo le da espacio para no chocar con el navbar) -->
+                    
                     <div class="card border-0 shadow-sm sticky-lg-top resumen-fijo">
                         <div class="card-body p-4">
                             <h2 class="h5 fw-bold mb-3">Resumen del pedido</h2>
 
-                            <!-- Cada fila: texto a la izquierda y monto a la derecha (justify-content-between) -->
+                            
                             <div class="d-flex justify-content-between small mb-2">
                                 <span class="text-secondary">Precio regular (<span id="resumenCantidad">0</span> productos)</span>
                                 <span id="resumenRegular">S/ 0.00</span>
                             </div>
                             <div class="d-flex justify-content-between small mb-2">
                                 <span class="text-secondary">Descuento de ofertas</span>
-                                <!-- text-success -> verde, porque es un ahorro -->
+                                
                                 <span class="text-success" id="resumenDescuento">- S/ 0.00</span>
                             </div>
-                            <!-- Fila del cupón: oculta (d-none) hasta que se aplique uno -->
+                            
                             <div class="d-flex justify-content-between small mb-2 d-none" id="filaCupon">
                                 <span class="text-secondary">Cupón UTP10 (10%)</span>
                                 <span class="text-success" id="resumenCupon">- S/ 0.00</span>
                             </div>
 
-                            <!-- hr -> línea separadora -->
+                            
                             <hr>
 
                             <div class="d-flex justify-content-between align-items-center mb-1">
@@ -113,23 +113,23 @@
                             </div>
                             <p class="small text-secondary mb-3">Precios en soles, IGV incluido.</p>
 
-                            <!-- Cupón de descuento: input-group une la caja de texto con el botón -->
+                            
                             <label for="inputCupon" class="form-label small fw-semibold">¿Tienes un cupón?</label>
                             <div class="input-group mb-1">
                                 <input type="text" class="form-control" id="inputCupon" placeholder="Ej: UTP10">
                                 <button class="btn btn-outline-primary" type="button" onclick="aplicarCupon()">Aplicar</button>
                             </div>
-                            <!-- Mensaje del cupón (lo llena carrito-pagina.js) -->
+                            
                             <p class="small mb-3" id="mensajeCupon"></p>
 
-                            <!-- d-grid -> el botón ocupa todo el ancho; btn-lg -> botón grande -->
+                            
                             <div class="d-grid">
                                 <button type="button" class="btn btn-primary btn-lg" onclick="finalizarCompra()">
                                     <i class="bi bi-lock-fill me-1"></i>Finalizar compra
                                 </button>
                             </div>
 
-                            <!-- Métodos de pago aceptados (solo informativo) -->
+                            
                             <div class="d-flex justify-content-center gap-3 text-secondary small mt-3">
                                 <span><i class="bi bi-credit-card me-1"></i>Tarjeta</span>
                                 <span><i class="bi bi-phone me-1"></i>Yape / Plin</span>
@@ -142,12 +142,11 @@
         </div>
     </main>
 
-    <!-- Modal de compra realizada (componente Modal de Bootstrap). El pago
-         todavía es simulado: no se cobra nada, solo se vacía el carrito. -->
+    
     <div class="modal fade" id="modalCompra" tabindex="-1" aria-labelledby="modalCompraTitulo" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0">
-                <!-- text-center p-5 -> todo centrado con bastante espacio -->
+                
                 <div class="modal-body text-center p-5">
                     <i class="bi bi-check-circle-fill display-3 text-success"></i>
                     <h2 class="h4 fw-bold mt-3" id="modalCompraTitulo">¡Compra realizada!</h2>
@@ -159,12 +158,12 @@
         </div>
     </div>
 
-    <!-- Footer compartido -->
+    
     <footer th:replace="~{fragments/layout :: footer}"></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/js/productos.js}"></script>
-    <script th:src="@{/js/carrito.js}"></script>
-    <script th:src="@{/js/carrito-pagina.js}"></script>
+    <script th:src="@{/js/productos.js(v=4)}"></script>
+    <script th:src="@{/js/carrito.js(v=4)}"></script>
+    <script th:src="@{/js/carrito-pagina.js(v=2)}"></script>
 </body>
 </html>

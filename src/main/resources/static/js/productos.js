@@ -1,21 +1,3 @@
-// Lista de suscripciones que vende la tienda. Por ahora está escrita a
-// mano aquí (datos de ejemplo); más adelante esto vendrá del backend
-// (Spring Boot + base de datos) en vez de estar "hardcodeado".
-// Cada objeto es UNA tarjeta del catálogo.
-//
-// Campos de cada producto:
-//   id             -> identificador único (lo usa el carrito)
-//   nombre         -> título que se ve en la tarjeta
-//   modelo         -> marca/modelo de IA; es lo que usa el filtro "Modelo de IA"
-//   tipo           -> tipo de entrega (cuenta, clave, invitación...)
-//   duracion       -> cuánto dura la suscripción
-//   precio         -> precio actual en soles
-//   precioAnterior -> precio antes de la oferta (null si no tiene oferta)
-//   stock          -> cuántas quedan disponibles (0 = agotado)
-//   ventas         -> cuántas se vendieron; se usa para ordenar por "Relevancia"
-//   icono          -> clase de Bootstrap Icons que se dibuja en la portada
-//   descripcion    -> texto largo del modal "Ver detalles"
-//   incluye        -> lista de beneficios del modal "Ver detalles"
 var PRODUCTOS = [
     {
         id: 'chatgpt-plus',
@@ -214,34 +196,39 @@ var PRODUCTOS = [
         incluye: ['Búsquedas Pro ilimitadas', 'Elección de modelo de IA', 'Subida de archivos', 'Activación inmediata']
     }
 ];
-
-// Busca un producto por su id dentro de la lista de arriba.
-// Devuelve el objeto del producto, o undefined si no existe.
+var IMAGENES_PRODUCTOS = {
+    'chatgpt-plus': 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&auto=format&fit=crop',
+    'chatgpt-team': 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=900&auto=format&fit=crop',
+    'chatgpt-pro': 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=900&auto=format&fit=crop',
+    'claude-pro': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&auto=format&fit=crop',
+    'claude-max-5x': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop',
+    'claude-team': 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=900&auto=format&fit=crop',
+    'gemini-pro': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&auto=format&fit=crop',
+    'gemini-ultra': 'https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=900&auto=format&fit=crop',
+    'midjourney-basic': 'https://images.unsplash.com/photo-1549490349-8643362247b5?w=900&auto=format&fit=crop',
+    'midjourney-standard': 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=900&auto=format&fit=crop',
+    'midjourney-pro': 'https://images.unsplash.com/photo-1633412802994-5c058f151b66?w=900&auto=format&fit=crop',
+    'copilot-pro': 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&auto=format&fit=crop',
+    'copilot-pro-plus': 'https://images.unsplash.com/photo-1516321165247-4aa89a48be28?w=900&auto=format&fit=crop',
+    'perplexity-pro': 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=900&auto=format&fit=crop'
+};
+PRODUCTOS.forEach(function (producto) {
+    producto.imagenUrl = IMAGENES_PRODUCTOS[producto.id];
+});
 function buscarProducto(id) {
     return PRODUCTOS.find(function (producto) {
         return producto.id === id;
     });
 }
-
-// Convierte un número al formato de precio en soles, por ejemplo
-// 59.9 -> "S/ 59.90" (toFixed(2) siempre deja 2 decimales)
 function formatearPrecio(numero) {
     return 'S/ ' + numero.toFixed(2);
 }
-
-// Calcula el % de descuento de un producto en oferta, redondeado.
-// Ejemplo: de 75 a 59.90 -> 20 (%). Si no tiene oferta devuelve 0.
 function calcularDescuento(producto) {
     if (!producto.precioAnterior) {
         return 0;
     }
     return Math.round((1 - producto.precio / producto.precioAnterior) * 100);
 }
-
-// Devuelve la clase CSS del color de portada según el modelo de IA.
-// Ejemplo: 'GitHub Copilot' -> 'portada-github-copilot' (todo en
-// minúsculas y los espacios cambiados por guiones). Esas clases están
-// definidas en styles.css.
 function clasePortada(modelo) {
     return 'portada-' + modelo.toLowerCase().replace(/ /g, '-');
 }

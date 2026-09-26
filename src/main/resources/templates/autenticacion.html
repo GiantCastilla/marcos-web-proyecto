@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesión - Tienda de Licencias AI</title>
+    <title>Iniciar sesión - Hakai</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -11,18 +11,16 @@
 </head>
 <body class="min-vh-100 d-flex flex-column">
 
-    <!-- Navbar compartido (ninguna sección marcada como activa) -->
+    
     <nav th:replace="~{fragments/layout :: navbar('login')}"></nav>
 
-    <!-- flex-grow-1 -> ocupa el espacio entre navbar y footer
-         d-flex align-items-center justify-content-center -> centra la tarjeta de login en ese espacio
-         p-4 -> padding alrededor -->
+    
     <main class="flex-grow-1 d-flex align-items-center justify-content-center p-4">
 
     <div class="auth-card overflow-hidden">
 
         <div class="auth-header text-center">
-            <h1 class="auth-title">Tienda de Licencias AI</h1>
+            <h1 class="auth-title">Hakai</h1>
             <p class="auth-subtitle">Acceso a tu cuenta</p>
         </div>
 
@@ -37,14 +35,10 @@
 
         <div class="p-4 d-block" id="form-login">
 
-            <!-- Mensaje de error real que manda AuthController cuando el
-                 correo/clave no coinciden (RedirectAttributes con
-                 "flash attribute", por eso no hace falta que este
-                 controlador reciba el Model a mano) -->
+            
             <div class="alert alert-danger py-2 small mb-3" th:if="${error}" th:text="${error}"></div>
 
-            <!-- Ya manda el formulario de verdad al backend (POST /login,
-                 ver AuthController) en vez de solo prevenir el envío -->
+            
             <form th:action="@{/login}" method="post">
                 <div class="mb-3">
                     <label class="form-label-custom" for="login-email">Correo Electrónico</label>
@@ -54,10 +48,7 @@
                     <label class="form-label-custom" for="login-password">Contraseña</label>
                     <input class="form-control form-control-custom w-100" id="login-password" name="password" placeholder="••••••••" required type="password">
                 </div>
-                <!-- OJO: en el archivo original de avance 1 este botón no
-                     tenía la clase real "btn" de Bootstrap (solo la clase
-                     de color a la medida), lo cual no cumplía la regla de
-                     tu compañero. Se la agregué acá. -->
+                
                 <button class="w-100 btn btn-custom-primary" type="submit">
                     ACCEDER
                 </button>
@@ -86,18 +77,15 @@
     </div>
     </main>
 
-    <!-- Footer compartido con los datos de contacto -->
+    
     <footer th:replace="~{fragments/layout :: footer}"></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- productos.js y carrito.js: para que el numerito del carrito del navbar funcione en esta página -->
+    
     <script th:src="@{/js/productos.js}"></script>
     <script th:src="@{/js/carrito.js}"></script>
 
     <script>
-        // Cambia entre la pestaña de "Iniciar sesión" y "Registrarse"
-        // mostrando/ocultando cada formulario con las clases d-block/d-none
-        // de Bootstrap (no hay nada de backend todavía, solo la UI)
         function cambiarPestana(tab) {
             const loginForm = document.getElementById('form-login');
             const registerForm = document.getElementById('form-register');

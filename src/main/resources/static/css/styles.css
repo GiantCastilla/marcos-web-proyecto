@@ -1,27 +1,9 @@
-/* Estilos propios de la Tienda de Licencias AI.
-   Ahora SOLO hay tema claro (se quitó el modo oscuro).
-   Reglas del curso: sin variables CSS (:root / var()), colores en hex
-   plano y medidas en px.
-   Regla del grupo: lo que es Navbar, Cards, Botones, Formularios,
-   Tablas, Íconos, Modal, grilla, etc. se hace con clases de Bootstrap;
-   aquí solo cambiamos COLORES y cosas decorativas que Bootstrap no trae
-   (portadas de color, banner, footer...).
-
-   Paleta:
-   azul principal   #1f3a68   (navbar, botones, precios)
-   azul hover       #162b4f
-   azul footer      #14264a
-   azul claro       #e6ecf5   (fondos suaves)
-   fondo de página  #edebe6
-   tarjetas         #ffffff
-   bordes           #e4e1da
-   texto            #1c1b19
-   texto secundario #5b5852 */
 
 
-/* ============================================================ */
-/* BASE                                                          */
-/* ============================================================ */
+
+
+
+
 
 body {
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -30,7 +12,7 @@ body {
     color: #1c1b19;
 }
 
-/* Links normales en nuestro azul (Bootstrap los trae en otro azul) */
+
 a {
     color: #1f3a68;
 }
@@ -45,11 +27,11 @@ a:hover {
 }
 
 
-/* ============================================================ */
-/* COLORES DE BOOTSTRAP CAMBIADOS A NUESTRA PALETA               */
-/* (Bootstrap pone !important en sus clases de color, por eso    */
-/* aquí también hace falta)                                      */
-/* ============================================================ */
+
+
+
+
+
 
 .bg-primary,
 .text-bg-primary {
@@ -67,9 +49,7 @@ a:hover {
     color: #5b5852 !important;
 }
 
-/* Las páginas antiguas (dashboard, solicitudes, soporte) usaban
-   text-light para el texto principal cuando eran oscuras; en tema claro
-   ese texto debe ser oscuro */
+
 .text-light {
     color: #1c1b19 !important;
 }
@@ -94,7 +74,7 @@ a:hover {
 .bg-info-subtle      { background-color: #e4eefa !important; }
 .bg-secondary-subtle { background-color: #eceae6 !important; }
 
-/* Botón principal (btn-primary) en nuestro azul */
+
 .btn-primary {
     background-color: #1f3a68;
     border-color: #1f3a68;
@@ -109,7 +89,7 @@ a:hover {
     color: #ffffff !important;
 }
 
-/* Botón con borde azul (btn-outline-primary) */
+
 .btn-outline-primary {
     color: #1f3a68;
     border-color: #1f3a68;
@@ -122,26 +102,26 @@ a:hover {
     color: #ffffff !important;
 }
 
-/* Botón con estilo de link (btn-link) */
+
 .btn-link {
     color: #1f3a68;
     text-decoration: none;
 }
 
-/* Radio buttons marcados del filtro en azul */
+
 .form-check-input:checked {
     background-color: #1f3a68;
     border-color: #1f3a68;
 }
 
-/* Borde azul al hacer clic en una caja de texto o select */
+
 .form-control:focus,
 .form-select:focus {
     border-color: #1f3a68;
     box-shadow: 0px 0px 0px 3px #d3ddee;
 }
 
-/* Pregunta abierta del acordeón (Sobre nosotros) */
+
 .accordion-button:not(.collapsed) {
     background-color: #e6ecf5;
     color: #1f3a68;
@@ -152,11 +132,11 @@ a:hover {
 }
 
 
-/* ============================================================ */
-/* NAVBAR AZUL                                                   */
-/* ============================================================ */
 
-/* Links del navbar: blanco suave; el activo y el hover en blanco puro */
+
+
+
+
 .navbar .nav-link {
     color: #d6e0f0;
     font-weight: 600;
@@ -175,16 +155,16 @@ a:hover {
 }
 
 
-/* ============================================================ */
-/* BANNER DE OFERTAS (carrusel del catálogo)                     */
-/* ============================================================ */
 
-/* Alto fijo de cada slide del banner */
+
+
+
+
 .banner-slide {
     height: 260px;
 }
 
-/* Degradados de fondo de cada slide */
+
 .banner-azul {
     background: linear-gradient(120deg, #1f3a68 0%, #2f5ea8 100%);
 }
@@ -197,19 +177,27 @@ a:hover {
     background: linear-gradient(120deg, #0f5a4a 0%, #1f3a68 100%);
 }
 
-/* Ícono gigante decorativo a la derecha del banner */
+
 .banner-icono {
     font-size: 140px;
     color: #ffffff;
     opacity: 0.25;
 }
 
+.banner-imagen {
+    width: 190px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 1rem;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
 
-/* ============================================================ */
-/* TARJETAS DE PRODUCTO (catálogo)                               */
-/* ============================================================ */
 
-/* Pequeño "salto" hacia arriba al pasar el mouse */
+
+
+
+
+
 .tarjeta-producto {
     transition: transform 0.15s ease, box-shadow 0.15s ease;
     overflow: hidden;
@@ -220,25 +208,30 @@ a:hover {
     box-shadow: 0px 10px 24px rgba(31, 58, 104, 0.18) !important;
 }
 
-/* Recuadro de color de arriba de cada tarjeta */
+
 .portada {
     height: 140px;
+    overflow: hidden;
 }
 
-/* Portada del modal "Ver detalles" */
+.portada img {
+    object-fit: cover;
+    filter: brightness(0.72);
+}
+
+
 .portada-detalle {
     min-height: 220px;
 }
 
-/* Cuadradito de color en la tabla del carrito */
+
 .portada-mini {
     width: 48px;
     height: 48px;
     flex-shrink: 0;
 }
 
-/* Colores de portada por modelo de IA (productos.js arma el nombre de
-   la clase: "portada-" + modelo en minúsculas con guiones) */
+
 .portada-chatgpt {
     background: linear-gradient(135deg, #0f7a5f 0%, #10a37f 100%);
 }
@@ -264,26 +257,26 @@ a:hover {
 }
 
 
-/* ============================================================ */
-/* CARRITO                                                       */
-/* ============================================================ */
 
-/* Ancho fijo del grupo de botones - / cantidad / + */
+
+
+
+
 .grupo-cantidad {
     width: 120px;
 }
 
-/* Espacio arriba para que el resumen "pegajoso" no quede debajo del navbar */
+
 .resumen-fijo {
     top: 96px;
 }
 
 
-/* ============================================================ */
-/* SOBRE NOSOTROS                                                */
-/* ============================================================ */
 
-/* Círculo azul claro detrás de los íconos de Misión/Visión/Valores */
+
+
+
+
 .icono-circulo {
     width: 52px;
     height: 52px;
@@ -296,7 +289,7 @@ a:hover {
     font-size: 24px;
 }
 
-/* Avatar grande con iniciales del equipo */
+
 .avatar-grande {
     width: 72px;
     height: 72px;
@@ -311,9 +304,9 @@ a:hover {
 }
 
 
-/* ============================================================ */
-/* FOOTER                                                        */
-/* ============================================================ */
+
+
+
 
 .footer-tienda {
     background-color: #14264a;
@@ -337,11 +330,11 @@ a:hover {
 }
 
 
-/* ============================================================ */
-/* ESTILOS DE LAS PÁGINAS ANTERIORES (login, dashboard,          */
-/* solicitudes, soporte) — se mantienen para que sigan viéndose  */
-/* bien, ahora en versión clara                                  */
-/* ============================================================ */
+
+
+
+
+
 
 .auth-card {
     border-radius: 12px;
@@ -487,9 +480,7 @@ a:hover {
     border: 1px solid #e4e1da;
 }
 
-/* La X de los modales antiguos venía en blanco (btn-close-white) para
-   fondo oscuro; en tema claro se le quita ese filtro. Dentro de las
-   etiquetas azules (text-bg-primary) sí se deja blanca. */
+
 .modal .btn-close-white {
     filter: none;
 }

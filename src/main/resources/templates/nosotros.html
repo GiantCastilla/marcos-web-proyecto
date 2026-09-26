@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre nosotros - Tienda de Licencias AI</title>
+    <title>Sobre nosotros - Hakai</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -11,44 +11,42 @@
 </head>
 <body class="min-vh-100 d-flex flex-column">
 
-    <!-- Navbar compartido; 'nosotros' marca "Sobre nosotros" como activo -->
+    
     <nav th:replace="~{fragments/layout :: navbar('nosotros')}"></nav>
 
     <main class="flex-grow-1 py-4">
         <div class="container">
 
-            <!-- ================================================ -->
-            <!-- PORTADA                                            -->
-            <!-- ================================================ -->
-            <!-- banner-azul -> mismo degradado azul del banner del catálogo (styles.css)
-                 rounded-4 -> esquinas bien redondeadas; p-4 p-md-5 -> padding (más en pantallas medianas)
-                 text-white -> texto blanco; mb-5 -> margen grande abajo -->
+            
+            
+            
+            
             <section class="banner-azul rounded-4 p-4 p-md-5 text-white mb-5 shadow-sm">
-                <!-- col-lg-8 -> el texto no ocupa todo el ancho en pantallas grandes (se lee mejor) -->
+                
                 <div class="col-lg-8">
                     <span class="badge bg-warning text-dark mb-3">SOBRE NOSOTROS</span>
                     <h1 class="display-5 fw-bold">Hacemos que la inteligencia artificial esté al alcance de todos</h1>
-                    <!-- lead -> párrafo de introducción un poco más grande; opacity-75 -> algo transparente -->
+                    
                     <p class="lead opacity-75 mb-0">Somos una tienda peruana de suscripciones de IA: vendemos planes originales de las herramientas más usadas, con precios en soles y activación rápida.</p>
                 </div>
             </section>
 
-            <!-- ================================================ -->
-            <!-- QUIÉNES SOMOS + NÚMEROS                            -->
-            <!-- ================================================ -->
-            <!-- align-items-center -> texto y números centrados verticalmente entre sí -->
+            
+            
+            
+            
             <section class="row g-4 align-items-center mb-5">
-                <!-- col-lg-6 -> mitad del ancho en pantallas grandes -->
+                
                 <div class="col-lg-6">
                     <h2 class="h3 fw-bold mb-3">¿Quiénes somos?</h2>
                     <p class="text-secondary">Nacimos como un proyecto de estudiantes de Ingeniería de Software de la UTP que notaron un problema común: pagar herramientas de IA en dólares, con tarjeta internacional, es complicado para muchos estudiantes y emprendedores en el Perú.</p>
                     <p class="text-secondary mb-0">Por eso reunimos en un solo lugar las suscripciones más pedidas —ChatGPT, Claude, Gemini, Midjourney, GitHub Copilot y más— con pago en soles, Yape o Plin, y soporte en español.</p>
                 </div>
                 <div class="col-lg-6">
-                    <!-- row-cols-2 -> 2 tarjetas por fila; g-3 -> espacio entre ellas -->
+                    
                     <div class="row row-cols-2 g-3">
                         <div class="col">
-                            <!-- card h-100 text-center -> tarjeta de alto completo con texto centrado -->
+                            
                             <div class="card border-0 shadow-sm h-100 text-center">
                                 <div class="card-body">
                                     <div class="fs-2 fw-bold text-primary">+2 500</div>
@@ -84,16 +82,16 @@
                 </div>
             </section>
 
-            <!-- ================================================ -->
-            <!-- MISIÓN, VISIÓN Y VALORES                           -->
-            <!-- ================================================ -->
-            <!-- row-cols-1 row-cols-md-3 -> 1 tarjeta por fila en celular, 3 por fila desde pantallas medianas -->
+            
+            
+            
+            
             <section class="row row-cols-1 row-cols-md-3 g-4 mb-5">
                 <div class="col">
                     <div class="card border-0 shadow-sm h-100">
-                        <!-- p-4 -> padding interno más grande -->
+                        
                         <div class="card-body p-4">
-                            <!-- icono-circulo -> círculo azul claro detrás del ícono (styles.css) -->
+                            
                             <div class="icono-circulo mb-3"><i class="bi bi-bullseye"></i></div>
                             <h3 class="h5 fw-bold">Misión</h3>
                             <p class="text-secondary small mb-0">Facilitar el acceso a herramientas de inteligencia artificial originales, con precios justos, pagos locales y atención cercana.</p>
@@ -120,18 +118,18 @@
                 </div>
             </section>
 
-            <!-- ================================================ -->
-            <!-- POR QUÉ ELEGIRNOS                                  -->
-            <!-- ================================================ -->
+            
+            
+            
             <section class="mb-5">
-                <!-- text-center -> título centrado -->
+                
                 <h2 class="h3 fw-bold text-center mb-4">¿Por qué elegirnos?</h2>
-                <!-- row-cols-2 row-cols-lg-4 -> 2 por fila en celular, 4 por fila en pantallas grandes -->
+                
                 <div class="row row-cols-2 row-cols-lg-4 g-3">
                     <div class="col">
                         <div class="card border-0 shadow-sm h-100 text-center">
                             <div class="card-body">
-                                <!-- display-6 text-primary -> ícono grande en nuestro azul -->
+                                
                                 <i class="bi bi-patch-check-fill display-6 text-primary"></i>
                                 <h3 class="h6 fw-bold mt-2">Licencias originales</h3>
                                 <p class="small text-secondary mb-0">Solo vendemos planes oficiales de cada marca.</p>
@@ -168,17 +166,17 @@
                 </div>
             </section>
 
-            <!-- ================================================ -->
-            <!-- EQUIPO (cambiar por los nombres reales del grupo)  -->
-            <!-- ================================================ -->
+            
+            
+            
             <section class="mb-5">
                 <h2 class="h3 fw-bold text-center mb-4">Nuestro equipo</h2>
-                <!-- row-cols-2 row-cols-md-4 -> 2 por fila en celular, 4 desde pantallas medianas -->
+                
                 <div class="row row-cols-2 row-cols-md-4 g-3">
                     <div class="col">
                         <div class="card border-0 shadow-sm h-100 text-center">
                             <div class="card-body">
-                                <!-- avatar-grande -> círculo con iniciales (styles.css); mx-auto -> centrado horizontal -->
+                                
                                 <div class="avatar-grande mx-auto mb-3">GC</div>
                                 <h3 class="h6 fw-bold mb-1">Giant Castilla</h3>
                                 <p class="small text-secondary mb-0">Desarrollo frontend</p>
@@ -215,32 +213,31 @@
                 </div>
             </section>
 
-            <!-- ================================================ -->
-            <!-- PREGUNTAS FRECUENTES: componente Accordion de      -->
-            <!-- Bootstrap. id="preguntas" para el link del footer. -->
-            <!-- ================================================ -->
-            <!-- col-lg-8 mx-auto -> ancho reducido y centrado en pantallas grandes -->
+            
+            
+            
+            
+            
             <section class="col-lg-8 mx-auto mb-5" id="preguntas">
                 <h2 class="h3 fw-bold text-center mb-4">Preguntas frecuentes</h2>
-                <!-- accordion -> lista de preguntas que se abren y cierran; shadow-sm -> sombra -->
+                
                 <div class="accordion shadow-sm" id="acordeonPreguntas">
-                    <!-- accordion-item -> cada pregunta -->
+                    
                     <div class="accordion-item">
                         <h3 class="accordion-header">
-                            <!-- accordion-button -> el título clicable; data-bs-target -> qué respuesta abre -->
+                            
                             <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#respuesta1" aria-expanded="true" aria-controls="respuesta1">
                                 ¿Cómo recibo mi suscripción?
                             </button>
                         </h3>
-                        <!-- accordion-collapse collapse show -> respuesta abierta al inicio (show)
-                             data-bs-parent -> al abrir una, se cierran las demás -->
+                        
                         <div id="respuesta1" class="accordion-collapse collapse show" data-bs-parent="#acordeonPreguntas">
                             <div class="accordion-body text-secondary small">Después de confirmar el pago te enviamos a tu correo los datos de acceso o la clave de activación, según el tipo de plan, en menos de 24 horas.</div>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <h3 class="accordion-header">
-                            <!-- collapsed -> esta pregunta empieza cerrada -->
+                            
                             <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#respuesta2" aria-expanded="false" aria-controls="respuesta2">
                                 ¿Qué métodos de pago aceptan?
                             </button>
@@ -262,11 +259,11 @@
                 </div>
             </section>
 
-            <!-- ================================================ -->
-            <!-- LLAMADO A LA ACCIÓN                                -->
-            <!-- ================================================ -->
+            
+            
+            
             <section class="card border-0 shadow-sm">
-                <!-- flex-column flex-md-row -> en celular uno debajo del otro; desde pantallas medianas en fila -->
+                
                 <div class="card-body p-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                     <div>
                         <h2 class="h5 fw-bold mb-1">¿Listo para potenciar tu trabajo con IA?</h2>
@@ -278,11 +275,11 @@
         </div>
     </main>
 
-    <!-- Footer compartido -->
+    
     <footer th:replace="~{fragments/layout :: footer}"></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- productos.js y carrito.js se cargan para que el numerito del carrito del navbar funcione aquí también -->
+    
     <script th:src="@{/js/productos.js}"></script>
     <script th:src="@{/js/carrito.js}"></script>
 </body>

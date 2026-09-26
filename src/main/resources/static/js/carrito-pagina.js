@@ -1,39 +1,19 @@
-// Lógica SOLO de la página del Carrito: dibuja la tabla, cambia
-// cantidades, elimina productos, calcula el resumen y aplica el cupón.
-// Necesita productos.js y carrito.js cargados antes.
-
-// Guarda si el usuario ya aplicó el cupón UTP10 (true/false)
 var cuponAplicado = false;
-
-// ------------------------------------------------------------------
-// DIBUJAR EL CARRITO
-// ------------------------------------------------------------------
 function mostrarCarrito() {
     var carrito = leerCarrito();
-
-    // Si está vacío, mostramos el bloque "carrito vacío" y ocultamos el otro
     var vacio = carrito.length === 0;
     document.getElementById('carritoVacio').classList.toggle('d-none', !vacio);
     document.getElementById('carritoLleno').classList.toggle('d-none', vacio);
     if (vacio) {
         return;
     }
-
-    // Una fila <tr> por cada producto del carrito
     document.getElementById('tablaCarrito').innerHTML = carrito.map(crearFilaCarrito).join('');
 
     calcularResumen();
 }
-
-// Devuelve el HTML de UNA fila de la tabla del carrito
 function crearFilaCarrito(item) {
     var producto = buscarProducto(item.id);
     var subtotal = producto.precio * item.cantidad;
-
-    // portada-mini -> cuadradito de color de la marca (styles.css)
-    // input-group input-group-sm -> los botones - y + pegados al número, en tamaño pequeño
-    // grupo-cantidad -> ancho fijo del grupo (styles.css)
-    // disabled en "+" -> no deja pasar del stock disponible
     return `
         <tr>
             <td class="ps-4 py-3">
@@ -68,12 +48,6 @@ function crearFilaCarrito(item) {
             </td>
         </tr>`;
 }
-
-// ------------------------------------------------------------------
-// ACCIONES SOBRE EL CARRITO
-// ------------------------------------------------------------------
-
-// Suma (+1) o resta (-1) una unidad. Si llega a 0, se elimina el producto.
 function cambiarCantidad(id, cambio) {
     var producto = buscarProducto(id);
     var carrito = leerCarrito();
@@ -84,7 +58,7 @@ function cambiarCantidad(id, cambio) {
 
     var nuevaCantidad = item.cantidad + cambio;
     if (nuevaCantidad > producto.stock) {
-        return;   // no deja pasar del stock
+        return;
     }
     if (nuevaCantidad <= 0) {
         eliminarDelCarrito(id);
@@ -95,8 +69,6 @@ function cambiarCantidad(id, cambio) {
     guardarCarrito(carrito);
     mostrarCarrito();
 }
-
-// Quita un producto completo del carrito (filter se queda con todos menos ese)
 function eliminarDelCarrito(id) {
     var carrito = leerCarrito().filter(function (elemento) {
         return elemento.id !== id;
@@ -104,33 +76,24 @@ function eliminarDelCarrito(id) {
     guardarCarrito(carrito);
     mostrarCarrito();
 }
-
-// Vacía todo el carrito
 function vaciarCarrito() {
     cuponAplicado = false;
     guardarCarrito([]);
     mostrarCarrito();
 }
-
-// ------------------------------------------------------------------
-// RESUMEN DEL PEDIDO
-// ------------------------------------------------------------------
 function calcularResumen() {
     var carrito = leerCarrito();
     var cantidadTotal = 0;
-    var precioRegular = 0;   // lo que costaría sin ofertas
-    var totalOfertas = 0;    // lo que cuesta con los precios de oferta
+    var precioRegular = 0;
+    var totalOfertas = 0;
 
     carrito.forEach(function (item) {
         var producto = buscarProducto(item.id);
-        // Si no tiene precio anterior, su precio regular es el mismo precio actual
         var regular = producto.precioAnterior ? producto.precioAnterior : producto.precio;
         cantidadTotal += item.cantidad;
         precioRegular += regular * item.cantidad;
         totalOfertas += producto.precio * item.cantidad;
     });
-
-    // El cupón UTP10 descuenta 10% sobre el total que ya tiene las ofertas
     var descuentoCupon = cuponAplicado ? totalOfertas * 0.10 : 0;
     var total = totalOfertas - descuentoCupon;
 
@@ -141,9 +104,6 @@ function calcularResumen() {
     document.getElementById('filaCupon').classList.toggle('d-none', !cuponAplicado);
     document.getElementById('resumenTotal').textContent = formatearPrecio(total);
 }
-
-// Revisa el cupón escrito. trim() quita espacios y toUpperCase() lo pasa a mayúsculas,
-// así "utp10 " también funciona.
 function aplicarCupon() {
     var codigo = document.getElementById('inputCupon').value.trim().toUpperCase();
     var mensaje = document.getElementById('mensajeCupon');
@@ -159,18 +119,44 @@ function aplicarCupon() {
     }
     calcularResumen();
 }
+async function finalizarCompra() {
+    var carrito = leerCarrito();
+    var ids = [];
+    carrito.forEach(function (item) {
+        for (var cantidad = 0; cantidad < item.cantidad; cantidad++) {
+            ids.push(item.id);
+        }
+    });
 
-// ------------------------------------------------------------------
-// FINALIZAR COMPRA (simulado: todavía no hay pasarela de pago)
-// ------------------------------------------------------------------
-function finalizarCompra() {
-    // Número de pedido inventado con la fecha actual en milisegundos (últimos 6 dígitos)
-    document.getElementById('numeroPedido').textContent = '#TL-' + String(Date.now()).slice(-6);
+    if (ids.length === 0) {
+        return;
+    }
 
-    // Mostramos el modal de "Compra realizada" y vaciamos el carrito
-    bootstrap.Modal.getOrCreateInstance(document.getElementById('modalCompra')).show();
-    vaciarCarrito();
+    try {
+        var respuesta = await fetch('/api/v1/compras/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ suscripcionIds: ids })
+        });
+        if (!respuesta.ok) {
+            throw new Error('No se pudo registrar la compra.');
+        }
+
+        var pedido = await respuesta.json();
+        actualizarStockDespuesDeCompra(pedido.suscripciones);
+        document.getElementById('numeroPedido').textContent = pedido.pedidoId;
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('modalCompra')).show();
+        vaciarCarrito();
+    } catch (error) {
+        window.alert(error.message);
+    }
 }
-
-// Al cargar la página, dibujamos el carrito
+function actualizarStockDespuesDeCompra(suscripcionesCompradas) {
+    suscripcionesCompradas.forEach(function (suscripcionComprada) {
+        var producto = buscarProducto(suscripcionComprada.id);
+        if (producto) {
+            producto.stock = Math.max(0, producto.stock - 1);
+        }
+    });
+}
 document.addEventListener('DOMContentLoaded', mostrarCarrito);

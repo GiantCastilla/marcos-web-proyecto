@@ -1,79 +1,11 @@
 <!DOCTYPE html>
 <html lang="es" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Hakai</title>
-
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Dashboard - Hakai</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"><link rel="stylesheet" th:href="@{/css/styles.css}"></head>
 <body class="min-vh-100 d-flex flex-column">
-
-    
     <div th:replace="~{fragments/layout :: navbar('dashboard')}"></div>
-
-    <main class="flex-grow-1 p-4" data-suscripciones-url="/api/v1/usuarios/suscripciones">
-        <div class="container mx-auto" style="max-width: 1180px;">
-            <div class="mb-4">
-                <h1 class="fw-bold mb-1">Mi panel</h1>
-                <p class="text-secondary mb-0">Consulta tus suscripciones compradas y su fecha de vencimiento.</p>
-            </div>
-
-            <div class="row g-3 mb-4">
-                <div class="col-sm-6">
-                    <div class="card bg-body-secondary h-100">
-                        <div class="card-body">
-                            <div class="text-secondary text-uppercase small mb-1">Suscripciones compradas</div>
-                            <div id="totalSuscripciones" class="fs-3 fw-bold">0</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="card bg-body-secondary h-100">
-                        <div class="card-body">
-                            <div class="text-secondary text-uppercase small mb-1">Suscripciones activas</div>
-                            <div id="totalActivas" class="fs-3 fw-bold text-success">0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <section class="card bg-body-secondary">
-                <div class="card-body">
-                    <h2 class="h5 fw-semibold mb-3">Mis suscripciones</h2>
-                    <div id="panelError" class="alert alert-danger d-none" role="alert"></div>
-                    <div id="panelVacio" class="text-center text-secondary py-5">
-                        <i class="bi bi-box-seam fs-1 d-block mb-2"></i>
-                        <p class="mb-0">Todavía no tienes suscripciones compradas.</p>
-                        <a class="btn btn-primary mt-3" href="/catalogo">Explorar catálogo</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table align-middle mb-0">
-                            <thead>
-                                <tr class="text-secondary small">
-                                    <th>Suscripción</th>
-                                    <th>Inicio</th>
-                                    <th>Vencimiento</th>
-                                    <th>Tiempo restante</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tablaSuscripciones"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    
-    <footer th:replace="~{fragments/layout :: footer}"></footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/js/panel.js(v=2)}"></script>
+    <main class="flex-grow-1 p-4"><div class="container mx-auto" style="max-width: 1180px;"><div class="mb-4"><h1 class="fw-bold mb-1">Mi panel</h1><p class="text-secondary mb-0">Consulta tus suscripciones compradas y su fecha de vencimiento.</p></div>
+        <div class="row g-3 mb-4"><div class="col-sm-6"><div class="card bg-body-secondary h-100"><div class="card-body"><div class="text-secondary text-uppercase small mb-1">Suscripciones compradas</div><div class="fs-3 fw-bold" th:text="${totalSuscripciones}">0</div></div></div></div><div class="col-sm-6"><div class="card bg-body-secondary h-100"><div class="card-body"><div class="text-secondary text-uppercase small mb-1">Suscripciones activas</div><div class="fs-3 fw-bold text-success" th:text="${totalActivas}">0</div></div></div></div></div>
+        <section class="card bg-body-secondary"><div class="card-body"><h2 class="h5 fw-semibold mb-3">Mis suscripciones</h2><div th:if="${suscripciones.isEmpty()}" class="text-center text-secondary py-5"><i class="bi bi-box-seam fs-1 d-block mb-2"></i><p class="mb-0">Todavía no tienes suscripciones compradas.</p><a class="btn btn-primary mt-3" href="/catalogo">Explorar catálogo</a></div><div th:unless="${suscripciones.isEmpty()}" class="table-responsive"><table class="table align-middle mb-0"><thead><tr class="text-secondary small"><th>Suscripción</th><th>Inicio</th><th>Vencimiento</th><th>Tiempo restante</th><th>Estado</th></tr></thead><tbody><tr th:each="suscripcion : ${suscripciones}"><td class="fw-semibold" th:text="${suscripcion.nombre}"></td><td th:text="${suscripcion.fechaInicio}"></td><td th:text="${suscripcion.fechaVencimiento}"></td><td th:text="${suscripcion.diasRestantes < 0 ? 'Vencida hace ' + (-suscripcion.diasRestantes) + ' dias' : suscripcion.diasRestantes + ' dias restantes'}"></td><td><span class="badge" th:classappend="${suscripcion.estado == 'ACTIVA' ? 'text-bg-success' : suscripcion.estado == 'POR_VENCER' ? 'text-bg-warning' : 'text-bg-danger'}" th:text="${suscripcion.estado}"></span></td></tr></tbody></table></div></div></section>
+    </div></main><footer th:replace="~{fragments/layout :: footer}"></footer><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

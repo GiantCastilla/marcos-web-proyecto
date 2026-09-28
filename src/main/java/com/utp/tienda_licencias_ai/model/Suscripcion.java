@@ -12,6 +12,7 @@ public class Suscripcion {
     private String descripcion;
     private String imagenUrl;
     private int stock;
+    private BigDecimal precioAnterior;
 
     public Suscripcion() {
     }
@@ -43,6 +44,16 @@ public class Suscripcion {
             case "perplexity-pro" -> 14;
             default -> 0;
         };
+        this.precioAnterior = switch (id) {
+            case "chatgpt-plus", "claude-pro", "gemini-pro", "perplexity-pro" -> new BigDecimal("75.00");
+            case "chatgpt-pro" -> new BigDecimal("750.00");
+            case "claude-team" -> new BigDecimal("120.00");
+            case "gemini-ultra" -> new BigDecimal("940.00");
+            case "midjourney-basic" -> new BigDecimal("38.00");
+            case "midjourney-standard" -> new BigDecimal("113.00");
+            case "copilot-pro" -> new BigDecimal("38.00");
+            default -> null;
+        };
     }
 
     public String getId() { return id; }
@@ -54,5 +65,13 @@ public class Suscripcion {
     public String getDescripcion() { return descripcion; }
     public String getImagenUrl() { return imagenUrl; }
     public int getStock() { return stock; }
+    public BigDecimal getPrecioAnterior() { return precioAnterior; }
+    public int getPorcentajeDescuento() {
+        if (precioAnterior == null || precioAnterior.signum() == 0) {
+            return 0;
+        }
+        return precioAnterior.subtract(precio).multiply(BigDecimal.valueOf(100))
+                .divide(precioAnterior, 0, java.math.RoundingMode.HALF_UP).intValue();
+    }
     public void reducirStock(int cantidad) { stock = Math.max(0, stock - cantidad); }
 }

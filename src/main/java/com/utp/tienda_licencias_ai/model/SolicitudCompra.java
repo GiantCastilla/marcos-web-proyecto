@@ -11,4 +11,5 @@ public class SolicitudCompra {
 
     public Long getUsuarioId() { return usuarioId; }
     public List<String> getSuscripcionIds() { return suscripcionIds; }
+    public void setSuscripcionIds(List<String> suscripcionIds) { this.suscripcionIds = suscripcionIds; }
 }

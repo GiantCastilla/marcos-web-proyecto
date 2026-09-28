@@ -55,6 +55,26 @@ public class TiendaRestController {
 
     private final Map<Long, List<SuscripcionActiva>> suscripcionesPorUsuario = new ConcurrentHashMap<>();
 
+    public List<Suscripcion> obtenerSuscripciones() {
+        return suscripciones;
+    }
+
+    public Suscripcion obtenerSuscripcionPorId(String id) {
+        return buscarPorId(id);
+    }
+
+    public List<SuscripcionActiva> obtenerSuscripcionesDelUsuario(HttpSession session) {
+        Object usuarioId = session.getAttribute("usuarioId");
+        if (!(usuarioId instanceof Long id)) {
+            return Collections.emptyList();
+        }
+        Object comprasEnSesion = session.getAttribute("suscripcionesCompradas");
+        List<SuscripcionActiva> activasGuardadas = comprasEnSesion instanceof List<?> lista
+                ? lista.stream().filter(SuscripcionActiva.class::isInstance).map(SuscripcionActiva.class::cast).toList()
+                : suscripcionesPorUsuario.getOrDefault(id, Collections.emptyList());
+        return activasGuardadas.stream().map(this::actualizarEstado).toList();
+    }
+
     @GetMapping("/suscripciones")
     public ResponseEntity<List<Suscripcion>> listarSuscripciones(
             @RequestParam(required = false) String categoria,
@@ -148,14 +168,7 @@ public class TiendaRestController {
         if (!(usuarioId instanceof Long id)) {
             return ResponseEntity.status(401).body(Map.of("error", "Debe iniciar sesion."));
         }
-        Object comprasEnSesion = session.getAttribute("suscripcionesCompradas");
-        List<SuscripcionActiva> activasGuardadas = comprasEnSesion instanceof List<?> lista
-            ? lista.stream().filter(SuscripcionActiva.class::isInstance).map(SuscripcionActiva.class::cast).toList()
-            : suscripcionesPorUsuario.getOrDefault(id, Collections.emptyList());
-        List<SuscripcionActiva> activas = activasGuardadas.stream()
-                .map(this::actualizarEstado)
-                .toList();
-        return ResponseEntity.ok(activas);
+        return ResponseEntity.ok(obtenerSuscripcionesDelUsuario(session));
     }
 
     private SuscripcionActiva crearSuscripcionActiva(Suscripcion suscripcion, LocalDate inicio, LocalDate vencimiento) {
